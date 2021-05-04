@@ -1,8 +1,6 @@
 import config from '../lib/bxb_config'
 import fs from 'fs'
-import path from 'path'
 import httpStatus from 'http-status'
-import Model from '../models/media.model'
 import ipfsService from '../lib/ipfsClient'
 
 const debug = require('debug')('bxb:mediaCtrl')

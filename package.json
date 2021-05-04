@@ -1,5 +1,5 @@
 {
-  "name": "backend-prototype",
+  "name": "ipfs-backend",
   "version": "1.0.0",
   "description": "This README would normally document whatever steps are necessary to get your application up and running.",
   "main": "app.js",
@@ -35,13 +35,7 @@
     "uglify-es": "^3.3.9"
   },
   "dependencies": {
-    "@bxb/device-tools": "^1.0.20",
-    "@hapi/joi-date": "^2.0.1",
-    "accesscontrol": "^2.2.1",
-    "bcryptjs": "^2.4.3",
-    "better-sqlite3": "^7.1.2",
     "body-parser": "^1.19.0",
-    "connect-sqlite3": "^0.9.11",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
     "express": "^4.17.1",
@@ -54,7 +48,6 @@
     "ipfs-core": "^0.5.4",
     "ipfs-http-client": "^49.0.4",
     "json": "^10.0.0",
-    "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.2",
     "nconf": "^0.11.2",
     "node-fetch": "^2.6.1",
