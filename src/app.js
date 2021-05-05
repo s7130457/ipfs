@@ -48,7 +48,6 @@ app.delete('/api/media/:id', async (req, res) => {
 })
 
 app.param('id', (req, res, next, id) => {
-  console.log(456);
   const obj = jsonData.find(file => file.id === id)
   req.obj = obj
   next()
