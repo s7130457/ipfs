@@ -2,36 +2,53 @@ const express = require('express')
 const cors = require('cors')
 const os = require('os')
 const multer = require('multer')
-const httpStatus = require('http-status')
 const ipfsClient = require('ipfs-http-client')
 const ipfs = ipfsClient('http://127.0.0.1:5002')
-const router = express.Router()
-
-const STORAGE = (os.platform() === 'darwin') ? './root/storage' : '/root/storage'
-
+const STORAGE = (os.platform() !== 'linux') ? './root/storage' : '/root/storage'
 const upload = multer({ dest: STORAGE })
-
+const fs = require('fs')
 const app = express()
 app.use(cors())
-app.use('/api', router)
+const fpath = `./ipfs.json`
+let jsonData = fs.readFileSync(fpath);
+jsonData = JSON.parse(jsonData)
+app.listen(8090, () => console.log(`server run 8090`))
+app.get('/api/media', async (req, res) => {
+  return res.status(200).json(jsonData)
+})
 
-router.post('/api/media', upload.single('file'), async (req, res) => {
-  console.log(123);
-  const info = await ipfsService.add(req.file)
-  const content = fs.readFileSync(req.file.path)
-  const data = await ipfs.add({
-    path: `./${req.file.originalname}`,
-    content: content
+app.post('/api/media', upload.single('file'), async (req, res) => {
+  let chunks = []
+  const readStream = fs.createReadStream(req.file.path)
+  readStream.on('data', function(chunk) {
+    chunks.push(chunk)
   })
-  
-
-  fs.unlinkSync(req.file.path)
-  return res.status(httpStatus.OK).json(info)
+  readStream.on('end', async () => {
+    const data = await ipfs.add({
+      path: `./${req.file.originalname}`,
+      content: chunks
+    })
+    console.log(data);
+    const info = {
+      type: req.file.mimetype,
+      title: req.file.originalname,
+      id: data.path,
+    }
+    jsonData.push(info)
+    fs.writeFileSync(fpath, JSON.stringify(jsonData))
+    fs.unlinkSync(req.file.path)
+    return res.status(200).json(info)
+  })
 })
 
-
-app.listen(8090, () => {
-  console.log('start');
+app.delete('/api/media/:id', async (req, res) => {
+  jsonData = jsonData.filter(file => file.id !== req.obj.id)
+  fs.writeFileSync(fpath, JSON.stringify(jsonData))
+  return res.status(200).json(jsonData)
 })
 
-// export default app
+app.param('id', (req, res, next, id) => {
+  const obj = jsonData.find(file => file.id === id)
+  req.obj = obj
+  next()
+})
