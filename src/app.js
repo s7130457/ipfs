@@ -34,8 +34,11 @@ app.post('/api/media', upload.single('file'), async (req, res) => {
       title: req.file.originalname,
       id: data.path,
     }
-    jsonData.push(info)
-    fs.writeFileSync(fpath, JSON.stringify(jsonData))
+    const file = jsonData.find(file => file.id === info.id)
+    if (!file) {
+      jsonData.push(info)
+      fs.writeFileSync(fpath, JSON.stringify(jsonData))
+    }
     fs.unlinkSync(req.file.path)
     return res.status(200).json(info)
   })
