@@ -1,18 +1,23 @@
 const express = require('express')
 const cors = require('cors')
 const os = require('os')
-const multer = require('multer')
 const ipfsClient = require('ipfs-http-client')
+const multer = require('multer')
+const fs = require('fs')
+
 const ipfs = ipfsClient('http://127.0.0.1:5002')
 const STORAGE = (os.platform() !== 'linux') ? './root/storage' : '/root/storage'
 const upload = multer({ dest: STORAGE })
-const fs = require('fs')
+
 const app = express()
 app.use(cors())
+
 const fpath = `./ipfs.json`
 let jsonData = fs.readFileSync(fpath);
 jsonData = JSON.parse(jsonData)
+
 app.listen(8090, () => console.log(`server run 8090`))
+
 app.get('/api/media', async (req, res) => {
   return res.status(200).json(jsonData)
 })
