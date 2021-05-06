@@ -4,7 +4,7 @@
   "description": "This README would normally document whatever steps are necessary to get your application up and running.",
   "main": "app.js",
   "scripts": {
-    "dev": "DEBUG=bxb:* NODE_ENV=development $(npm bin)/gulp serve",
+    "dev": "node ./src/app.js",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --timeout 100000 --require @babel/register ./test/index.test.js ",
     "deploy": "gulp deploy && node scripts/deploy.js"
   },
