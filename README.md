@@ -5,7 +5,7 @@
 ### How do I get set up? ###
 
 * ```npm install```
-* ```npm run dev```
+* ```npm start```
 
 
 #### Ref

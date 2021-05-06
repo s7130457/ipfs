@@ -1,0 +1,28 @@
+{
+  "apps": [
+    {
+      "name": "backend",
+      "script": "./app.js",
+      "node_args": "--inspect=0.0.0.0:9229 --expose-gc",
+      "log_date_format": "YYYY-MM-DD HH:mm:ss",
+      "merge_logs": true,
+      "cwd": "./src",
+      "restart_delay": 1000,
+      "max_restarts": 1000
+    },
+    {
+      "name": "ipfs",
+      "script": "./node_modules/.bin/jsipfs",
+      "args": "daemon",
+      "log_date_format": "YYYY-MM-DD HH:mm:ss",
+      "merge_logs": true,
+      "cwd": "./node_modules/.bin",
+      "env": {
+        "DEBUG": "ipfs:*",
+        "NODE_ENV": "development"
+      },
+      "restart_delay": 1000,
+      "max_restarts": 1000
+    }
+  ]
+}
